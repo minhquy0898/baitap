@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bai4.css">
+    <title>Bài tập</title>
+</head>
+
+<body>
+
+    <form id="contactForm">
+        <input type="text" id="nameInput" placeholder="Tên" required>
+        <input type="tel" id="phoneInput" placeholder="Số điện thoại" required>
+        <button type="submit">Thêm</button>
+    </form>
+    <br>
+    <input type="text" id="searchInput" placeholder="Tìm kiếm">
+    <button onclick="deleteContact(contact.phone)">Xoá</button>
+    <button>Tìm trùng</button>
+    <br><br>
+    <table id="contactTable">
+        <tr>
+            <th>Tên</th>
+            <th>Số điện thoại</th>
+            <th></th>
+        </tr>
+    </table>
+
+    <script>
+        var contacts = [];
+
+        function addContact(name, phone) {
+            var existingContact = contacts.find(function (contact) {
+                return contact.phone === phone;
+            });
+
+            if (existingContact) {
+                alert('Số điện thoại đã tồn tại');
+                return;
+            }
+
+            var contact = {
+                name: name,
+                phone: phone
+            };
+
+            contacts.push(contact);
+            contacts.sort(function (a, b) {
+                return a.name.localeCompare(b.name);
+            });
+
+            renderContacts();
+        }
+
+        function deleteContact(phone) {
+            contacts = contacts.filter(function (contact) {
+                return contact.phone !== phone;
+            });
+
+            renderContacts();
+        }
+
+        function searchContacts(searchTerm) {
+            var filteredContacts = contacts.filter(function (contact) {
+                return contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    contact.phone.includes(searchTerm);
+            });
+
+            renderContacts(filteredContacts);
+        }
+
+        function renderContacts(filteredContacts) {
+            var table = document.getElementById('contactTable');
+            table.innerHTML = `
+                <tr>
+                    <th>Tên</th>
+                    <th>Số điện thoại</th>
+                    <th></th>
+                </tr>
+            `;
+
+            var contactsToRender = filteredContacts || contacts;
+
+            contactsToRender.forEach(function (contact) {
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${contact.name}</td>
+                    <td>${contact.phone}</td>
+                `;
+
+                table.appendChild(row);
+            });
+        }
+
+        var contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            var nameInput = document.getElementById('nameInput');
+            var phoneInput = document.getElementById('phoneInput');
+            var name = nameInput.value;
+            var phone = phoneInput.value;
+
+            addContact(name, phone);
+
+            nameInput.value = '';
+            phoneInput.value = '';
+        });
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function () {
+            var searchTerm = searchInput.value;
+            searchContacts(searchTerm);
+        });
+    </script>
+
+</body>
+
+</html>

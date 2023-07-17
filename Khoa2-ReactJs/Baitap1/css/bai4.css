@@ -1,0 +1,24 @@
+#contactForm input {
+    outline: none;
+    padding: 6px 10px;
+}
+
+input {
+    outline: none;
+    padding: 6px 10px;
+}
+
+#contactForm button {
+    border: none;
+    border-radius: 8px;
+    padding: 6px 20px;
+    background-color: #8787e7;
+    color: #fff;
+}
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 6px 20px;
+    background-color: #8787e7;
+    color: #fff;
+}
